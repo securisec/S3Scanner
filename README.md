@@ -5,6 +5,11 @@ Forked, and updated the code to use a custom parsing scheme so as to not use a f
 Things changed:
 - Use parsel and crt to grab `https` domains. This does not work for `http`, but safe to assume that aws s3 buckets will not be over http.
 - added switch to read urls from file
+- Now there is two additional arguments
+```
+  -f BUCKETS            Name of text file containing buckets to check
+  -u URL                Url to check. No www or http/s required.
+```
 
 ## New usage example
 ```
