@@ -1,10 +1,10 @@
-#Forked
+##Forked
 
 Forked, and updated the code to use a custom parsing scheme so as to not use a file for urls. Also some additional changes.
 
 Things changed:
 - Use parsel and crt to grab `https` domains. This does not work for `http`, but safe to assume that aws s3 buckets will not be over http.
-- Change coloredlogs color scheme
+- added switch to read urls from file
 
 ## New usage example
 ```

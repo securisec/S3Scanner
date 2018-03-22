@@ -41,8 +41,9 @@ parser.add_argument('-l', '--list', required=False, dest='list', action='store_t
                     help='List all found open buckets locally')
 parser.add_argument('--version', required=False, dest='version', action='store_true',
                     help='Display the current version of this tool')
-# parser.add_argument('buckets', help='Name of text file containing buckets to check')
-parser.add_argument('buckets', help='Url to check. No www or http/s required')
+choice = parser.add_mutually_exclusive_group()
+choice.add_argument('-f', dest='buckets', help='Name of text file containing buckets to check')
+choice.add_argument('-u', dest='url', help='Url to check. No www or http/s required')
 
 # parser.set_defaults(includeClosed=False)
 parser.set_defaults(outFile='./buckets.txt')
@@ -52,20 +53,22 @@ parser.set_defaults(dump=False)
 if len(sys.argv) == 1:              # No args supplied, print the full help text instead of the short usage text
     parser.print_help()
     sys.exit(0)
-elif len(sys.argv) == 2:
-    if sys.argv[1] == '--version':  # Only --version arg supplied. Print the version and exit.
-        print(currentVersion)
-        sys.exit(0)
+# elif len(sys.argv) == 2:
+#     if sys.argv[1] == '--version':  # Only --version arg supplied. Print the version and exit.
+#         print(currentVersion)
+#         sys.exit(0)
 
 
 # Parse the args
 args = parser.parse_args()
-if True in [x in args.buckets for x in ['http', 'https', 'www']]:
-    print('Use just the domain name, no www/http/s')
-    exit()
+
+if args.url:
+    if True in [x in args.url for x in ['http', 'https', 'www']]:
+        print('Use just the domain name, no www/http/s')
+        exit()
 
 # query crt for domain names
-data = get('http://crt.sh/?q=%25.{0}'.format(args.buckets)).text
+data = get('http://crt.sh/?q=%25.{0}'.format(args.url)).text
 p = Selector(data)
 sites = set(p.xpath('//td/text()').re('.*\..*\..*'))
 
@@ -108,9 +111,15 @@ if not s3.checkAwsCreds():
     slog.error("Warning: AWS credentials not configured. Open buckets will be shown as closed. Run:"
                " `aws configure` to fix this.\n")
 
+if args.buckets:
+    with open(args.buckets, 'r') as data:
+        f = data.read().splitlines()
+else:
+    f = sites
+
 # with open(args.buckets, 'r') as f:
 all_found = ''
-for line in sites:
+for line in f:
     line = line.rstrip()            # Remove any extra whitespace
     # Determine what kind of input we're given. Options:
     #   bucket name   i.e. mybucket
