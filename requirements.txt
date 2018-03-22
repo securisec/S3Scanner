@@ -5,3 +5,4 @@ pytest-xdist
 coloredlogs
 boto3
 requests
+parsel

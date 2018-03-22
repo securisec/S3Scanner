@@ -1,6 +1,18 @@
-# S3Scanner
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) [![Build Status](https://travis-ci.org/sa7mon/S3Scanner.svg?branch=master)](https://travis-ci.org/sa7mon/S3Scanner)
+#Forked
 
+Forked, and updated the code to use a custom parsing scheme so as to not use a file for urls. Also some additional changes.
+
+Things changed:
+- Use parsel and crt to grab `https` domains. This does not work for `http`, but safe to assume that aws s3 buckets will not be over http.
+- Change coloredlogs color scheme
+
+## New usage example
+```
+python s3scanner.py example.com
+```
+
+# S3Scanner
+[![License: CC BY-NC-SA 4.0]
 A tool to find open S3 buckets and dump their contents :droplet:
 
 ![1 - s3finder.py](https://user-images.githubusercontent.com/3712226/37576404-34e02eee-2afa-11e8-8d18-bf2a63885c82.png)

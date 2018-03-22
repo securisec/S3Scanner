@@ -8,3 +8,5 @@ __pycache__
 list-buckets/
 buckets.txt
 test/
+test.py
+.vscode/
